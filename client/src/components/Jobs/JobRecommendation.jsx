@@ -117,7 +117,7 @@ const JobRecommendation = () => {
     fetchUserDataFromFirestore();
   }, [currentUser, locationUserData, locationRecommendations, setJobRecommendations, setJobsLoaded, setJobLoadingError, userDataToUse]);
 
-  // Fetching job recommendations
+  // Fetch job recommendations
   const fetchJobRecommendations = useCallback(async () => {
     if (!userDataToUse || Object.keys(userDataToUse).length === 0) return;
     if (page === 1 && jobsLoaded && jobRecommendations.highly_matched.length > 0) return;
@@ -244,6 +244,261 @@ const JobRecommendation = () => {
       ))}
     </div>
   );
-}
+
+  // Render job card
+  const renderJobCard = (job, category, index) => {
+    const jobRole = job["Job Role"] || "default";
+    const jobImage = jobImages[jobRole] || jobImages.default;
+    const matchedSkills = job["Matched Skills"] ? job["Matched Skills"].split(",") : [];
+    const missingSkills = job["Missing Skills"] ? job["Missing Skills"].split(",") : [];
+    const courses = job["Recommended Courses"] ? job["Recommended Courses"].split(",") : [];
+
+    return (
+      <motion.div
+        key={`${category}-${index}`}
+        variants={itemVariants}
+        className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col border border-gray-200"
+      >
+        <div className="relative">
+          <img
+            src={jobImage}
+            alt={jobRole}
+            className="w-full h-48 object-cover"
+            onError={(e) => (e.target.src = jobImages.default)}
+          />
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black opacity-60"></div>
+          <div className="absolute bottom-0 left-0 p-4 text-white">
+            <h3 className="text-xl font-bold drop-shadow-lg">{jobRole}</h3>
+            <p className="text-sm opacity-90">{job["Workplace Location"]}</p>
+          </div>
+        </div>
+
+        <div className="p-5 flex-grow">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg font-semibold text-gray-800">
+              ₹{parseInt(job["Salary (INR)"]).toLocaleString('en-IN')}
+            </span>
+            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+              {job["Employment Type"] || "Full-time"}
+            </span>
+          </div>
+
+          {matchedSkills.length > 0 && (
+            <div className="mb-3">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Skills You Have:</h4>
+              <div className="flex flex-wrap gap-1">
+                {matchedSkills.slice(0, 3).map((skill, i) => (
+                  <span key={i} className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                    {skill.trim()}
+                  </span>
+                ))}
+                {matchedSkills.length > 3 && (
+                  <span className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded">
+                    +{matchedSkills.length - 3} more
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {missingSkills.length > 0 && (
+            <div className="mb-3">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Skills to Develop:</h4>
+              <div className="flex flex-wrap gap-1">
+                {missingSkills.slice(0, 3).map((skill, i) => (
+                  <span key={i} className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">
+                    {skill.trim()}
+                  </span>
+                ))}
+                {missingSkills.length > 3 && (
+                  <span className="bg-red-50 text-red-800 text-xs px-2 py-1 rounded">
+                    +{missingSkills.length - 3} more
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {courses.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Recommended Courses:</h4>
+              <ul className="text-xs text-gray-600">
+                {courses.slice(0, 2).map((course, i) => (
+                  <li key={i} className="flex items-center mb-1">
+                    <span className="mr-1">🎓</span> {course.trim()}
+                  </li>
+                ))}
+                {courses.length > 2 && (
+                  <li className="text-blue-600 cursor-pointer hover:underline">
+                    +{courses.length - 2} more courses
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+        
+        <div className="p-4 pt-0">
+          <motion.button 
+            className="w-full px-4 py-2 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium rounded-lg shadow-md"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => handleViewDetails(job)} // Added click handler
+          >
+            View Details
+          </motion.button>
+        </div>
+      </motion.div>
+    );
+  };
+
+  // Render job grid
+  const renderJobGrid = (jobs, category) => (
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="grid grid-cols-1 md:grid-cols-2 gap-6"
+    >
+      {jobs.map((job, index) => renderJobCard(job, category, index))}
+    </motion.div>
+  );
+
+  // Calculate display data
+  const hasJobs = Object.values(jobRecommendations).some(arr => arr.length > 0);
+  const jobsByCategory = Object.fromEntries(
+    Object.entries(categoryInfo)
+      .filter(([category]) => jobRecommendations[category]?.length > 0)
+      .map(([category]) => [category, jobRecommendations[category]])
+  );
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-white to-blue-50 px-6 py-12">
+      <DecorativeElements />
+      
+      <motion.div 
+        className="w-full max-w-6xl relative z-10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        {/* Header */}
+        <motion.div 
+          className="mb-8 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.h1 
+            className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-cyan-500 mb-4"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            Your Career Opportunities
+          </motion.h1>
+          <motion.p 
+            className="text-gray-600 text-lg max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            Personalized job recommendations based on your skills, experience, and career goals
+          </motion.p>
+        </motion.div>
+
+        {/* Error Display */}
+        {jobLoadingError && (
+          <motion.div 
+            className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>{jobLoadingError}</span>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Main Loading State */}
+        {(loading || fetchingUserData) && (
+          <div className="bg-white rounded-xl shadow-xl p-12 flex justify-center items-center">
+            <LoadingIndicator />
+          </div>
+        )}
+
+        {/* Rendered Job Categories */}
+        {!loading && !fetchingUserData && (
+          Object.keys(jobsByCategory).map((category) => (
+            <motion.div 
+              key={category} 
+              className="mb-12 bg-white rounded-xl shadow-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={`bg-gradient-to-r ${categoryInfo[category].color} p-6`}>
+                <h2 className="text-2xl font-bold text-white flex items-center">
+                  <span className="mr-2">{categoryInfo[category].icon}</span>
+                  {categoryInfo[category].title}
+                </h2>
+              </div>
+              
+              <div className="p-6">
+                {renderJobGrid(jobsByCategory[category], category)}
+              </div>
+            </motion.div>
+          ))
+        )}
+        
+        {/* Load More indicator */}
+        {hasJobs && !loading && !fetchingUserData && (
+          <div 
+            ref={loadMoreRef} 
+            className="py-8 my-4 w-full text-center"
+            style={{ minHeight: '100px' }}
+          >
+            {loadingMore ? (
+              <LoadingIndicator />
+            ) : hasMore ? (
+              <div className="text-gray-600">
+                <p>Scroll for more opportunities...</p>
+              </div>
+            ) : (
+              <motion.div 
+                className="text-center text-gray-600 py-4 bg-white rounded-xl shadow-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <p>You've seen all available job recommendations</p>
+              </motion.div>
+            )}
+          </div>
+        )}
+        
+        {/* Empty state */}
+        {!loading && !fetchingUserData && !hasJobs && !jobLoadingError && (
+          <motion.div 
+            className="text-center py-16 bg-white rounded-xl shadow-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <svg className="w-16 h-16 mx-auto mb-4 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 className="text-xl font-semibold mb-2 text-gray-800">No job recommendations yet</h3>
+            <p className="text-gray-600">Complete your profile to get personalized job recommendations</p>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
 
 export default JobRecommendation;
