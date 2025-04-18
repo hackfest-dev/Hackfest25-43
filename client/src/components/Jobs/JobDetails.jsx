@@ -105,3 +105,6 @@ const JobDetails = () => {
       </div>
     );
   }
+}
+
+export default JobDetails;
