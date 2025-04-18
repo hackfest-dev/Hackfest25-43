@@ -1,11 +1,19 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import mongoose from "mongoose";
+const express = require('express');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 
-import userRoutes from "./routes/userRoutes.js";
-import jobRoutes from "./routes/jobRoutes.js";
-import mlRoutes from "./routes/mlRoutes.js";
-import interviewRoutes from "./routes/interviewRoutes.js";
+dotenv.config();
+connectDB();
 
 const app = express();
+app.use(express.json());
+
+// Routes
+app.use('/api/auth', authRoutes);
+
+// Error Handling Middleware
+app.use(errorHandler);
+
+module.exports = app;
