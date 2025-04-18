@@ -489,6 +489,312 @@ const Resume = () => {
       document.body.removeChild(link);
     }
   };
-}
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white rounded-xl shadow-xl overflow-hidden"
+        >
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-indigo-600 to-cyan-500 p-8">
+            <h1 className="text-3xl font-bold text-white">Resume Management</h1>
+            <p className="text-white/90 mt-2">Create, upload, and get feedback on your resume</p>
+          </div>
+
+          {/* Main Content */}
+          <div className="p-8">
+            {error && (
+              <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+                <div className="flex items-center">
+                  <svg className="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-red-700">{error}</p>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Generate Resume Card */}
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
+                <div className="flex justify-center mb-4">
+                  <svg className="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-semibold text-center mb-4">Generate Resume</h2>
+                <p className="text-gray-600 text-center mb-6">
+                  We'll create a professional resume using your profile information. Make sure your profile is complete.
+                </p>
+                <button
+                  onClick={handleGenerateResume}
+                  disabled={generating}
+                  className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {generating ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" duration="1s"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Generated
+                    </span>
+                  ) : "Generate Resume"}
+                </button>
+              </div>
+
+              {/* Upload Resume Card */}
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
+                <div className="flex justify-center mb-4">
+                  <svg className="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-semibold text-center mb-4">Upload Resume</h2>
+                <p className="text-gray-600 text-center mb-6">
+                  Already have a resume? Upload it to get personalized feedback and improvement suggestions.
+                </p>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleResumeUpload}
+                  accept=".pdf,.doc,.docx"
+                  className="hidden"
+                />
+                <button
+                  onClick={triggerFileInput}
+                  disabled={loading}
+                  className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Uploading...
+                    </span>
+                  ) : "Upload Resume"}
+                </button>
+                {uploadedFileName && (
+                  <p className="mt-3 text-sm text-center text-gray-500">
+                    Uploaded: {uploadedFileName}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Feedback Section */}
+            {feedback && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className={`mt-8 p-6 rounded-lg border ${
+                  feedback.type === "success" 
+                    ? "bg-green-50 border-green-200" 
+                    : "bg-blue-50 border-blue-200"
+                }`}
+              >
+                <h3 className={`text-lg font-semibold mb-3 ${
+                  feedback.type === "success" ? "text-green-700" : "text-blue-700"
+                }`}>
+                  {feedback.message}
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                  {/* Strengths Section */}
+                  {feedback.strengths && feedback.strengths.length > 0 && (
+                    <div>
+                      <h4 className="font-medium mb-2 text-green-700">Strengths:</h4>
+                      <ul className="space-y-2">
+                        {feedback.strengths.map((item, index) => (
+                          <li key={`strength-${index}`} className="flex items-start">
+                            <svg className="h-5 w-5 mt-0.5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="text-gray-700">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {/* Suggestions Section */}
+                  {feedback.suggestions && feedback.suggestions.length > 0 && (
+                    <div>
+                      <h4 className="font-medium mb-2 text-amber-700">Improvement Suggestions:</h4>
+                      <ul className="space-y-2">
+                        {feedback.suggestions.map((suggestion, index) => (
+                          <li key={`suggestion-${index}`} className="flex items-start">
+                            <svg className="h-5 w-5 mt-0.5 mr-2 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span className="text-gray-700">{suggestion}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+                
+                {/* General Tips Section */}
+                {feedback.improvements && feedback.improvements.length > 0 && (
+                  <div className="mt-6">
+                    <h4 className="font-medium mb-2 text-blue-700">General Resume Tips:</h4>
+                    <ul className="space-y-2">
+                      {feedback.improvements.map((improvement, index) => (
+                        <li key={`improvement-${index}`} className="flex items-start">
+                          <svg className="h-5 w-5 mt-0.5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-gray-700">{improvement}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Resume Actions */}
+                {resumeUrl && (
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    <a 
+                      href={resumeUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center px-4 py-2 rounded-md ${
+                        feedback.type === "success" 
+                          ? "bg-green-600 hover:bg-green-700" 
+                          : "bg-blue-600 hover:bg-blue-700"
+                      } text-white transition-colors`}
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      Preview Resume
+                    </a>
+                    
+                    <button
+                      onClick={handleDownloadResume}
+                      className="inline-flex items-center px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Resume
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* Resume Preview Section */}
+            {resumeUrl && !feedback && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="mt-8 p-6 rounded-lg border border-gray-200 bg-gray-50"
+              >
+                <h3 className="text-lg font-semibold mb-3">Resume Preview</h3>
+                <div className="flex justify-center mt-4">
+                  <div className="flex space-x-4">
+                    <a 
+                      href={resumeUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      Preview Resume
+                    </a>
+                    
+                    <button
+                      onClick={handleDownloadResume}
+                      className="inline-flex items-center px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Resume
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Profile Completion Notice */}
+            {(!userData || Object.keys(userData).length === 0) && (
+              <div className="mt-8 p-6 rounded-lg border border-amber-200 bg-amber-50">
+                <div className="flex items-start">
+                  <svg className="h-6 w-6 text-amber-500 mt-0.5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <div>
+                    <h3 className="text-lg font-medium text-amber-800 mb-2">Complete Your Profile</h3>
+                    <p className="text-amber-700">
+                      To generate a professional resume, please complete your profile information including work experience, education, and skills.
+                    </p>
+                    <button
+                      onClick={() => navigate("/profile")}
+                      className="mt-4 inline-flex items-center px-4 py-2 rounded-md bg-amber-600 hover:bg-amber-700 text-white transition-colors"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      Go to Profile
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Footer with Tips */}
+          <div className="bg-gray-50 px-8 py-6 border-t border-gray-200">
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Resume Best Practices</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex">
+                <svg className="h-6 w-6 text-indigo-500 mt-0.5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <div>
+                  <h4 className="font-medium text-gray-900">Keep it concise</h4>
+                  <p className="text-sm text-gray-600">Limit your resume to 1-2 pages with relevant information.</p>
+                </div>
+              </div>
+              <div className="flex">
+                <svg className="h-6 w-6 text-indigo-500 mt-0.5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <div>
+                  <h4 className="font-medium text-gray-900">Use quantifiable results</h4>
+                  <p className="text-sm text-gray-600">Include specific achievements with numbers when possible.</p>
+                </div>
+              </div>
+              <div className="flex">
+                <svg className="h-6 w-6 text-indigo-500 mt-0.5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <div>
+                  <h4 className="font-medium text-gray-900">Tailor for each job</h4>
+                  <p className="text-sm text-gray-600">Customize your resume for different job applications.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
 
 export default Resume;
