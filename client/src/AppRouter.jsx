@@ -13,20 +13,17 @@ import Layout from "./components/Layout.jsx";
 import { JobProvider } from "./context/JobContext.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { SetupRoute } from "./components/SetupRoute";
-// import ProfilePage from "./components/Profile/ProfilePage.jsx";
 import Profile from "./components/Profile/Profile.jsx";
-import Resume from "./components/Resume/Resume.jsx";
+import CreateResume from "./components/Resume/CreateResume.jsx";
+import ResumePage from "./components/Resume/ResumePage.jsx";
+import UploadResume from "./components/Resume/UploadResume.jsx";
 import JobDetails from "./components/Jobs/JobDetails.jsx";
-// import { useAuth } from "./context/AuthContext";
-// import Settings from "./components/Settings.jsx";
 
 const AppRouter = () => {
   return (
     <Router>
-      {/* Wrap the entire Router with JobProvider */}
       <JobProvider>
         <Routes>
-          {/* Public Routes - Outside Layout */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -47,7 +44,9 @@ const AppRouter = () => {
               <Route path="/jobs" element={<JobRecommendation />} />
               <Route path="/job-details" element={<JobDetails />} />            
               <Route path="/profile" element={<Profile />} />
-              <Route path="/resume" element={<Resume />} />
+              <Route path="/resume" element={<ResumePage />} />
+              <Route path="/create-resume" element={<CreateResume />} />
+              <Route path="/upload-resume" element={<UploadResume />} />
               {/* <Route path="/settings" element={<div>Settings Page</div>} /> */}
             </Route>
           </Route>
