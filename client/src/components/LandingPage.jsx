@@ -255,6 +255,7 @@ const Landing = () => {
         <p className="mt-4 text-lg md:text-xl text-gray-700 max-w-2xl mx-auto">
           Join our community of professionals finding their path to success, regardless of ability.
         </p>
+        <Link to={"/signup"}>
         <motion.button
           className="mt-8 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white text-lg rounded-full font-medium shadow-lg"
           whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.4)" }}
@@ -262,6 +263,7 @@ const Landing = () => {
         >
           Get Started Today
         </motion.button>
+        </Link>
       </motion.div>
     </div>
   );
