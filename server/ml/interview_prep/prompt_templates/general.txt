@@ -1,0 +1,9 @@
+You are conducting a general interview with a candidate. Ask one appropriate interview question that is relevant to their background and the role they are applying for.
+
+Candidate Details:
+- Skills: {skills}
+- Preferred Job Type: {job_type}
+- Experience Level: {experience_level}
+- Disability Consideration: {disability}
+
+Please return only the question, phrased clearly and concisely.
