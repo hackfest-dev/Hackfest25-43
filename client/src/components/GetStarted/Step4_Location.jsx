@@ -6,7 +6,7 @@ const locations = [
   "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune",
   "Jaipur", "Ahmedabad", "Surat", "Lucknow", "Kanpur", "Nagpur", "Indore",
   "Thane", "Bhopal", "Visakhapatnam", "Patna", "Vadodara", "Ghaziabad",
-  "Ludhiana", "Agra", "Nashik", "Faridabad", "Meerut", "Rajkot", "Varanasi",
+  "Ludhiana", "Agra", "Nashik", "Faridabad", "Meerut", "Mangalore", "Rajkot", "Varanasi",
   "Srinagar", "Aurangabad", "Dhanbad", "Amritsar", "Navi Mumbai", "Jodhpur",
   "Raipur", "Kota", "Guwahati", "Chandigarh", "Noida", "Dehradun",
   "Andaman and Nicobar Islands", "Puducherry", "Ladakh", "Jammu and Kashmir"
@@ -16,7 +16,7 @@ const locations = [
 const regionGroups = {
   "Metro Cities": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata"],
   "North India": ["Delhi", "Chandigarh", "Jammu and Kashmir", "Ladakh", "Ludhiana", "Amritsar", "Dehradun", "Lucknow", "Kanpur", "Noida", "Ghaziabad", "Meerut", "Agra", "Varanasi"],
-  "South India": ["Bangalore", "Chennai", "Hyderabad", "Visakhapatnam", "Puducherry"],
+  "South India": ["Bangalore", "Chennai","Mangalore", "Hyderabad", "Visakhapatnam", "Puducherry"],
   "West India": ["Mumbai", "Pune", "Ahmedabad", "Surat", "Thane", "Nashik", "Rajkot", "Vadodara", "Navi Mumbai", "Jodhpur"],
   "East India": ["Kolkata", "Patna", "Dhanbad", "Guwahati"],
   "Central India": ["Indore", "Bhopal", "Raipur", "Kota", "Nagpur", "Aurangabad"],
