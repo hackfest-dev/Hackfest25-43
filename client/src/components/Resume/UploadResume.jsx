@@ -260,10 +260,10 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { storage } from "../../firebase"; // Firebase storage import if you need it for anything else
-import axios from "axios";  // For API calls
+import { storage } from "../../firebase"; 
+import axios from "axios";  
 import { doc, updateDoc } from "firebase/firestore";
-import { db, auth } from "../../firebase"; // Firebase Firestore import
+import { db, auth } from "../../firebase"; 
 
 const UploadResume = () => {
   const [file, setFile] = useState(null);
@@ -344,22 +344,19 @@ const UploadResume = () => {
       }
 
       const userId = user.uid;
-
-      // Step 1: Upload the file to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "resume_upload_preset"); // Replace with your actual upload preset
+      formData.append("upload_preset", "resume_upload_preset");
 
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/upload", 
+        "https://api.cloudinary.com/v1_1/dnmaxvpjz/upload", 
         formData
       );
 
-      const cloudinaryUrl = response.data.secure_url; // This will give the URL of the uploaded file
+      const cloudinaryUrl = response.data.secure_url; 
 
       console.log("Cloudinary URL:", cloudinaryUrl);
 
-      // Step 2: Store the Cloudinary URL in Firestore
       const userRef = doc(db, "users", userId);
       await updateDoc(userRef, {
         resumeUrl: cloudinaryUrl,
