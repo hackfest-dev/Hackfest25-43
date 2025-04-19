@@ -109,7 +109,7 @@ const Footer = () => {
           animate={{ opacity: 0.8 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <p>&copy; 2024 opportUNITY. All rights reserved.</p>
+          <p>&copy; 2025 opportUNITY. All rights reserved.</p>
         </motion.div>
       </div>
     </footer>
