@@ -12,6 +12,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.8.4",
+    "cloudinary": "^2.6.0",
+    "cloudinary-core": "^2.13.1",
     "firebase": "^11.6.0",
     "framer-motion": "^12.7.4",
     "react": "^19.0.0",
