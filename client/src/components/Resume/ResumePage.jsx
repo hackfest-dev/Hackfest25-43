@@ -1,41 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import CreateResume from "./CreateResume";
 import UploadResume from "./UploadResume";
-
-// Create Resume Component
-const CreateResume = () => {
-  return (
-    <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-8 border border-gray-100">
-      <div className="flex justify-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 flex items-center justify-center shadow-md">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
-        </div>
-      </div>
-      
-      <h2 className="text-2xl font-bold text-center mb-4 bg-gradient-to-r from-purple-700 to-blue-600 text-transparent bg-clip-text">
-        Create Your Professional Resume
-      </h2>
-      
-      <p className="text-gray-600 text-center mb-6">
-        Build a custom resume with our interactive resume builder
-      </p>
-      
-      {/* Placeholder for resume builder (to be implemented) */}
-      <div className="text-center py-6">
-        <p className="text-gray-500 mb-4">Resume builder coming soon!</p>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
-        >
-          Start Building
-        </motion.button>
-      </div>
-    </div>
-  );
-};
 
 const ResumePage = () => {
   const [activeTab, setActiveTab] = useState("create");
