@@ -19,6 +19,7 @@ import ResumePage from "./components/Resume/ResumePage.jsx";
 import UploadResume from "./components/Resume/UploadResume.jsx";
 import JobDetails from "./components/Jobs/JobDetails.jsx";
 import InterviewPrep from "./components/Jobs/InterviewPrep.jsx";
+import Certificate from "./components/Profile/Certificate.jsx";
 
 const AppRouter = () => {
   return (
@@ -46,6 +47,7 @@ const AppRouter = () => {
               <Route path="/job-details" element={<JobDetails />} /> 
               <Route path="/interview-prep" element={<InterviewPrep />} />           
               <Route path="/profile" element={<Profile />} />
+              <Route path="/certificate" element={<Certificate />} />
               <Route path="/resume" element={<ResumePage />} />
               <Route path="/create-resume" element={<CreateResume />} />
               <Route path="/upload-resume" element={<UploadResume />} />

@@ -125,6 +125,10 @@ const Profile = () => {
     }
   };
 
+  const handleCertificateUpload = () => {
+    navigate("/certificate");
+  };
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -283,6 +287,12 @@ const Profile = () => {
                     className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Logout
+                  </button>
+                  <button
+                    onClick={handleCertificateUpload}
+                    className="px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors"
+                  >
+                    Upload Certificates
                   </button>
                   <button
                     onClick={() => setEditMode(true)}

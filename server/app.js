@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const errorHandler = require('./middlewares/errorHandler');
+const pwdRoutes = require("./routes/pwdRoutes");
+
+
 
 dotenv.config();
 connectDB();
@@ -15,5 +18,7 @@ app.use('/api/auth', authRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);
+
+app.use("/api/pwd", pwdRoutes);
 
 module.exports = app;
