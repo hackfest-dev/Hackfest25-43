@@ -18,6 +18,7 @@ import CreateResume from "./components/Resume/CreateResume.jsx";
 import ResumePage from "./components/Resume/ResumePage.jsx";
 import UploadResume from "./components/Resume/UploadResume.jsx";
 import JobDetails from "./components/Jobs/JobDetails.jsx";
+import InterviewPrep from "./components/Jobs/InterviewPrep.jsx";
 
 const AppRouter = () => {
   return (
@@ -42,7 +43,8 @@ const AppRouter = () => {
           <Route element={<ProtectedRoute requireSetup={true} />}>
             <Route element={<Layout />}>
               <Route path="/jobs" element={<JobRecommendation />} />
-              <Route path="/job-details" element={<JobDetails />} />            
+              <Route path="/job-details" element={<JobDetails />} /> 
+              <Route path="/interview-prep" element={<InterviewPrep />} />           
               <Route path="/profile" element={<Profile />} />
               <Route path="/resume" element={<ResumePage />} />
               <Route path="/create-resume" element={<CreateResume />} />

@@ -34,6 +34,7 @@ const Header = () => {
           <NavLink to="/jobs" label="Jobs" />
           <NavLink to="/profile" label="Profile" />
           <NavLink to="/resume" label="Resume" />
+          <NavLink to="/interview-prep" label="Interview Prep" />
         </nav>
       </div>
     </motion.header>
